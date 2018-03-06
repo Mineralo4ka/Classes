@@ -1,1 +1,6 @@
 C:\fuck you fucking fuck\VS\Projects\Classes\Classes\bin\Debug\Classes.exe.config
+C:\fuck you fucking fuck\VS\Projects\Classes\Classes\bin\Debug\Classes.exe
+C:\fuck you fucking fuck\VS\Projects\Classes\Classes\bin\Debug\Classes.pdb
+C:\fuck you fucking fuck\VS\Projects\Classes\Classes\obj\Debug\Classes.csprojResolveAssemblyReference.cache
+C:\fuck you fucking fuck\VS\Projects\Classes\Classes\obj\Debug\Classes.exe
+C:\fuck you fucking fuck\VS\Projects\Classes\Classes\obj\Debug\Classes.pdb
