@@ -19,13 +19,12 @@ namespace Classes
             switch (number){
                 case 1:
                     Console.Write("Введите первое число: ");
-                    string num_1 = Console.ReadLine();
+                    Large_Integer a = new Large_Integer(Console.ReadLine());
 
                     Console.Write("Введите второе число: ");
-                    string num_2 = Console.ReadLine();
+                    Large_Integer b = new Large_Integer(Console.ReadLine());
 
-                    Large_Integer large = new Large_Integer(num_1, num_2);
-                    large.Plus();
+                    Large_Integer c = a + b;
 
                     break;
                 case 2:
