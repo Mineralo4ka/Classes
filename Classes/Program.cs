@@ -24,8 +24,9 @@ namespace Classes
                     Console.Write("Введите второе число: ");
                     Large_Integer b = new Large_Integer(Console.ReadLine());
 
-                    Large_Integer c = a + b;
-
+                    //Large_Integer c = a + b;
+                    Large_Integer c = a - b;
+                   
                     break;
                 case 2:
                     Console.WriteLine("*Данный режим находится в стадии разработки*");

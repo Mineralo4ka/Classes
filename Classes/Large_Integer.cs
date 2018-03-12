@@ -9,6 +9,7 @@ namespace Classes
     class Large_Integer
     {
         private int[] number = null;
+        private bool minus = false;
 
         public Large_Integer(string num)
         {
@@ -17,7 +18,12 @@ namespace Classes
             {
                 for (int i = num.Length - 1; i >= 0; i--)
                 {
-                    number[number.Length - i - 1] = int.Parse(num[i].ToString());
+                    if (num[0] == '-')
+                    {
+                        minus = true;
+                        break;
+                    }
+                    number[number.Length - i - 1] = int.Parse(num[i].ToString()); 
                 }
             } else
             {
@@ -37,58 +43,74 @@ namespace Classes
         public static Large_Integer operator + (Large_Integer number_1, Large_Integer number_2)
         {
             Large_Integer result = null;
+            int digit;
 
             if (number_1.number.Length > number_2.number.Length)
             {
                 result = new Large_Integer(number_1.number.Length + 1);
-            }
-
-            if (number_2.number.Length > number_1.number.Length)
+            } else if (number_2.number.Length > number_1.number.Length)
             {
                 result = new Large_Integer(number_2.number.Length + 1);
-            }
-
-            if (number_1.number.Length == number_2.number.Length)
+            }else if (number_1.number.Length == number_2.number.Length)
             {
                 result = new Large_Integer(number_1.number.Length + 1);
             }
-
-            for (int i = 0; i <= number_1.number.Length - 1; i++)
-            {
-                Console.Write(number_1.number[i]);
-            }
-            Console.WriteLine();
-            for (int i = 0; i <= number_2.number.Length - 1; i++)
-            {
-                Console.Write(number_2.number[i]);
-            }
-            Console.WriteLine();
-
-            int digit;
-            
+         
             for (int i = 0; i < result.number.Length - 1; i++)
             {
                 digit = number_1.number[i] + number_2.number[i];
                 if (digit >= 10)
                 {
-                    result.number[i] = digit - 10;
+                    result.number[i] += digit - 10;
                     result.number[i + 1] += 1;
                 } else
                 {
-                    result.number[i] = digit;
+                    result.number[i] += digit;
                 }
             }
 
-            result.number.Reverse();
             for (int i = 0; i <= result.number.Length - 1; i++)
             {
-                if (result.number[0] == 0)
+                Console.Write(result.number[i]);
+            }
+
+            return result;
+        }
+
+        public static Large_Integer operator - (Large_Integer number_1, Large_Integer number_2)
+        {
+            Large_Integer result = null;
+            int digit;
+
+            if (number_1.number.Length > number_2.number.Length)
+            {
+                result = new Large_Integer(number_1.number.Length + 1);
+            }
+            else if (number_2.number.Length > number_1.number.Length)
+            {
+                result = new Large_Integer(number_2.number.Length + 1);
+            }
+            else if (number_1.number.Length == number_2.number.Length)
+            {
+                result = new Large_Integer(number_1.number.Length + 1);
+            }
+
+            for (int i = 0; i < result.number.Length - 1; i++)
+            {
+                digit = number_1.number[i] - number_2.number[i];
+                if (digit <= 0)
                 {
-                    Console.Write("");
-                } else
+                    result.number[i] += (number_1.number[i] + 10) - number_2.number[i];
+                    result.number[i + 1] -= 1;
+                }else
                 {
-                    Console.Write(result.number[i]);
+                    result.number[i] += digit;
                 }
+            }
+
+            for (int i = 0; i <= result.number.Length - 1; i++)
+            {
+                Console.Write(result.number[i]);
             }
 
             return result;
