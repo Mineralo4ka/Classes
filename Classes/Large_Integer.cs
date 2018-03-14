@@ -44,16 +44,17 @@ namespace Classes
         public static Large_Integer operator + (Large_Integer number_1, Large_Integer number_2)
         {
             Large_Integer result = null;
-            int digit;
-            int i = 0;
+            int digit, i = 0;
 
             if (number_1.number.Length > number_2.number.Length)
             {
                 result = new Large_Integer(number_1.number.Length + 1);
-            } else if (number_2.number.Length > number_1.number.Length)
+            }
+            if (number_2.number.Length > number_1.number.Length)
             {
                 result = new Large_Integer(number_2.number.Length + 1);
-            }else if (number_1.number.Length == number_2.number.Length)
+            }
+            if (number_1.number.Length == number_2.number.Length)
             {
                 result = new Large_Integer(number_1.number.Length + 1);
             }
@@ -194,6 +195,52 @@ namespace Classes
             }
 
             return result;
+        }
+
+        public static Large_Integer operator * (Large_Integer number_1, Large_Integer number_2)
+        {
+            Large_Integer result = null;
+            Large_Integer temp = null;
+            int i = 0;
+
+            result = new Large_Integer(number_1.number.Length + number_2.number.Length);
+            temp = new Large_Integer(number_1.number.Length + number_2.number.Length);
+
+            /*for (i = 0; i < result.number.Length; i++)
+            {
+                for (int j = 0; j < ; j++)
+                {
+                    temp.number[j] = number_1.number[i] * number_2.number[j];
+                }
+            }*/
+
+            for(i = 0; i < result.number.Length; i++)
+            {
+                Console.Write(result.number[i]);
+            }
+
+            return result;
+        }
+        
+        public Large_Integer Multiply(int value)
+        {
+            int k = 0;
+
+            int[] call = new int[number.Length + 1];
+
+            for (int i = 0; i < number.Length; i++)
+            {
+                int temp = number[i] * value + k;
+                call[i] = temp % 10;
+                k = temp / 10;
+            }
+
+            for (int i = 0; i < number.Length; i++)
+            {
+                Console.Write(number[i]);
+            }
+
+            return new Large_Integer (call.ToString());
         }
     }
 }
