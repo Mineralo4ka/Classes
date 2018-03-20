@@ -200,47 +200,66 @@ namespace Classes
         public static Large_Integer operator * (Large_Integer number_1, Large_Integer number_2)
         {
             Large_Integer result = null;
-            Large_Integer temp = null;
-            int i = 0;
+            int i = 0, min = 0, max = 0;
 
             result = new Large_Integer(number_1.number.Length + number_2.number.Length);
-            temp = new Large_Integer(number_1.number.Length + number_2.number.Length);
 
-            /*for (i = 0; i < result.number.Length; i++)
+            if (number_1.number.Length > number_2.number.Length)
             {
-                for (int j = 0; j < ; j++)
-                {
-                    temp.number[j] = number_1.number[i] * number_2.number[j];
-                }
-            }*/
+                max = number_1.number.Length;
+                min = number_2.number.Length;
+            }
+            if (number_2.number.Length > number_1.number.Length)
+            {
+                max = number_2.number.Length;
+                min = number_1.number.Length;
+            }
+            if (number_1.number.Length == number_2.number.Length)
+            {
+                max = number_1.number.Length;
+                min = number_2.number.Length;
+            }
 
-            for(i = 0; i < result.number.Length; i++)
+            for (i = 0; i < min; i++)
+            {
+                for (int j = 0; j < max; j++)
+                {              
+                    if (number_1.number.Length > number_2.number.Length)
+                    {
+                        result.number[j + i] += number_1.number[j] * number_2.number[i];
+                        if (result.number[j + i] > 9)
+                        {
+                            result.number[j + i + 1] += (number_1.number[j] * number_2.number[i]) / 10;
+                            result.number[j + i] += (number_1.number[j] * number_2.number[i]) % 10;
+                        }
+                    }
+                    if (number_1.number.Length < number_2.number.Length)
+                    {
+                        result.number[j + i] += number_1.number[i] * number_2.number[j];
+                        if (result.number[j + i] > 9)
+                        {
+                            result.number[j + i + 1] += (number_1.number[i] * number_2.number[j]) / 10;
+                            result.number[j + i] += (number_1.number[i] * number_2.number[j]) % 10;
+                        }
+                    }
+                    if (number_1.number.Length == number_2.number.Length)
+                    {
+                        result.number[j + i] += number_1.number[i] * number_2.number[j];
+                        if (result.number[j + i] > 9)
+                        {
+                            result.number[j + i + 1] += (number_1.number[i] * number_2.number[j]) / 10;
+                            result.number[j + i] += (number_1.number[i] * number_2.number[j]) % 10;
+                        }
+                    }
+                }
+            }
+
+            for(i = result.number.Length - 1; i >= 0; i--)
             {
                 Console.Write(result.number[i]);
             }
 
             return result;
-        }
-        
-        public Large_Integer Multiply(int value)
-        {
-            int k = 0;
-
-            int[] call = new int[number.Length + 1];
-
-            for (int i = 0; i < number.Length; i++)
-            {
-                int temp = number[i] * value + k;
-                call[i] = temp % 10;
-                k = temp / 10;
-            }
-
-            for (int i = 0; i < number.Length; i++)
-            {
-                Console.Write(number[i]);
-            }
-
-            return new Large_Integer (call.ToString());
         }
     }
 }

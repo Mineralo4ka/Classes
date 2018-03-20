@@ -27,7 +27,6 @@ namespace Classes
                     //Large_Integer c = a + b;
                     //Large_Integer c = a - b;
                     Large_Integer c = a * b;
-                    a.Multiply(2);
 
                     break;
                 case 2:
