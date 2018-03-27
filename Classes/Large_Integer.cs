@@ -19,11 +19,11 @@ namespace Classes
             {
                 for (int i = num.Length - 1; i >= 0; i--)
                 {
-                    /*if (num[0] == '-')
+                    if (num[0] == '-')
                     {
                         flag = true;
                         break;
-                    }*/
+                    }
                     number[number.Length - i - 1] = int.Parse(num[i].ToString());
                 }
             } else
@@ -44,7 +44,7 @@ namespace Classes
         public static Large_Integer operator + (Large_Integer number_1, Large_Integer number_2)
         {
             Large_Integer result = null;
-            int digit, i = 0;
+            int digit, i = 0, increase = 0;
 
             if (number_1.number.Length > number_2.number.Length)
             {
@@ -58,17 +58,28 @@ namespace Classes
             {
                 result = new Large_Integer(number_1.number.Length + 1);
             }
-         
-            for (i = 0; i < result.number.Length - 1; i++)
+
+            for (i = 0; i < Math.Max(number_1.number.Length, number_2.number.Length); i++)
             {
-                digit = number_1.number[i] + number_2.number[i];
-                if (digit >= 10)
+                if(i < number_1.number.Length && i < number_2.number.Length)
+                {
+                    digit = number_1.number[i] + number_2.number[i] + increase;
+                }else if(i >= number_1.number.Length && i < number_2.number.Length)
+                {
+                    digit = number_2.number[i] + increase;
+                }
+                else
+                {
+                    digit = number_1.number[i] + increase;
+                }
+                if (digit > 9)
                 {
                     result.number[i] += digit - 10;
-                    result.number[i + 1] += 1;
-                } else
+                    increase = 1;
+                }else
                 {
                     result.number[i] += digit;
+                    increase = 0;
                 }
             }
 
@@ -227,29 +238,19 @@ namespace Classes
                     if (number_1.number.Length > number_2.number.Length)
                     {
                         result.number[j + i] += number_1.number[j] * number_2.number[i];
-                        if (result.number[j + i] > 9)
-                        {
-                            result.number[j + i + 1] += (number_1.number[j] * number_2.number[i]) / 10;
-                            result.number[j + i] += (number_1.number[j] * number_2.number[i]) % 10;
-                        }
                     }
                     if (number_1.number.Length < number_2.number.Length)
                     {
                         result.number[j + i] += number_1.number[i] * number_2.number[j];
-                        if (result.number[j + i] > 9)
-                        {
-                            result.number[j + i + 1] += (number_1.number[i] * number_2.number[j]) / 10;
-                            result.number[j + i] += (number_1.number[i] * number_2.number[j]) % 10;
-                        }
                     }
                     if (number_1.number.Length == number_2.number.Length)
                     {
                         result.number[j + i] += number_1.number[i] * number_2.number[j];
-                        if (result.number[j + i] > 9)
-                        {
-                            result.number[j + i + 1] += (number_1.number[i] * number_2.number[j]) / 10;
-                            result.number[j + i] += (number_1.number[i] * number_2.number[j]) % 10;
-                        }
+                    }
+                    if (result.number[j + i] > 9)
+                    {
+                        result.number[i + j + 1] += (result.number[i + j]) / 10;
+                        result.number[i + j] = (result.number[i + j]) % 10;
                     }
                 }
             }

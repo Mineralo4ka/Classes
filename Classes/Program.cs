@@ -25,8 +25,8 @@ namespace Classes
                     Large_Integer b = new Large_Integer(Console.ReadLine());
 
                     //Large_Integer c = a + b;
-                    //Large_Integer c = a - b;
-                    Large_Integer c = a * b;
+                    Large_Integer c = a - b;
+                    //Large_Integer c = a * b;
 
                     break;
                 case 2:
