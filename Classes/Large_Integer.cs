@@ -6,131 +6,159 @@ using System.Threading.Tasks;
 
 namespace Classes
 {
-    class Large_Integer
+    class Large_integer
     {
-        public int[] number = null;
-        private bool flag = false;
-        
+        protected internal int[] number = null;
+        protected internal byte flag = 0;
+        protected internal char symbols = ' ';
 
-        public Large_Integer(string num)
+        public Large_integer(string number)
         {
-            number = new int[num.Length];
-            if (num.Length != 0 )
+            if (number[0] == '-')
             {
-                for (int i = num.Length - 1; i >= 0; i--)
+                flag = 1;
+                this.number = new int[number.Length - 1];
+                for (byte i = 1; i < number.Length; ++i)
                 {
-                    if (num[0] == '-')
-                    {
-                        flag = true;
-                        break;
-                    }
-                    number[number.Length - i - 1] = int.Parse(num[i].ToString());
+                    this.number[i - 1] = sbyte.Parse(number[i].ToString());
                 }
-            } else
+            }
+            else
             {
-                Console.WriteLine("Вы не ввели число");
+                flag = 0;
+                this.number = new int[number.Length];
+                for (byte i = 0; i < number.Length; ++i)
+                {
+                    this.number[i] = sbyte.Parse(number[i].ToString());
+                }
+            }
+        }
+        public Large_integer(byte size)
+        {
+            number = new int[size];
+            for (byte k = 0; k < size; ++k)
+            {
+                number[k] = 0;
             }
         }
 
-        public Large_Integer(int len)
+        public static Large_integer operator +(Large_integer number_1, Large_integer number_2)
         {
-            this.number = new int[len];
-            for (int i = 0; i < len; i++)
+            if ((number_1.flag == 1 && number_2.flag != 1) || (number_1.flag != 1 && number_2.flag == 1) || number_2.symbols != ' ')
             {
-                this.number[i] = 0;
+                number_2.symbols = '-';
+                return number_1 - number_2;
             }
-        }
+            else
+            {
+                Large_integer result = null;
+                int min = 0, i = 0;
 
-        public static Large_Integer operator + (Large_Integer number_1, Large_Integer number_2)
-        {
-            Large_Integer result = null;
-            int digit, i = 0, increase = 0;
-
-            if (number_1.number.Length > number_2.number.Length)
-            {
-                result = new Large_Integer(number_1.number.Length + 1);
-            }
-            if (number_2.number.Length > number_1.number.Length)
-            {
-                result = new Large_Integer(number_2.number.Length + 1);
-            }
-            if (number_1.number.Length == number_2.number.Length)
-            {
-                result = new Large_Integer(number_1.number.Length + 1);
-            }
-
-            for (i = 0; i < Math.Max(number_1.number.Length, number_2.number.Length); i++)
-            {
-                if(i < number_1.number.Length && i < number_2.number.Length)
+                if (number_1.number.Length >= number_2.number.Length)
                 {
-                    digit = number_1.number[i] + number_2.number[i] + increase;
-                }else if(i >= number_1.number.Length && i < number_2.number.Length)
+                    result = new Large_integer(Convert.ToByte(number_1.number.Length + 1));
+                    for (i = 1; i < result.number.Length; ++i)
+                        result.number[i] = number_1.number[i - 1];
+                    min = Convert.ToByte(number_2.number.Length);
+                }
+                if (number_1.number.Length < number_2.number.Length)
                 {
-                    digit = number_2.number[i] + increase;
+                    result = new Large_integer(Convert.ToByte(number_2.number.Length + 1));
+                    for (i = 1; i < result.number.Length; ++i)
+                        result.number[i] = number_2.number[i - 1];
+                    min = Convert.ToByte(number_1.number.Length);
+                }
+
+                if (result != null)
+                {
+                    for (i = min - 1; i >= 0; --i)
+                    {
+                        if (number_1.number.Length > number_2.number.Length)
+                        {
+                            result.number[i + result.number.Length - min] += number_2.number[i];
+                        }
+                        if (number_1.number.Length < number_2.number.Length)
+                        {
+                            result.number[i + result.number.Length - min] += number_1.number[i];
+                        }
+                    }
+                    for (i = result.number.Length - 1; i > 0; --i)
+                        if (result.number[i] > 9)
+                        {
+                            result.number[i - 1] += 1;
+                            result.number[i] -= 10;
+                        }
+                    result.flag = Convert.ToByte((number_1.flag + number_2.flag) / 2);
+
+                    return result;
                 }
                 else
                 {
-                    digit = number_1.number[i] + increase;
-                }
-                if (digit > 9)
-                {
-                    result.number[i] += digit - 10;
-                    increase = 1;
-                }else
-                {
-                    result.number[i] += digit;
-                    increase = 0;
+                    Console.WriteLine("Ошибка!");
+                    Console.ReadKey();
+                    return null;
                 }
             }
-
-            i = result.number.Length - 1;
-            while (result.number[i] == 0)
-            {
-                i--;
-                if (i == -1)
-                {
-                    i++;
-                    break;
-                }
-            }
-            for (; i >= 0; i--)
-            {
-                Console.Write(result.number[i]);
-            }
-
-            return result;
         }
 
-        public static Large_Integer operator - (Large_Integer number_1, Large_Integer number_2)
+        public static Large_integer operator -(Large_integer number_1, Large_integer number_2)
         {
-            Large_Integer result = null;
-            int checker = 0, min = 0;
-            int i = 0;
+            if (number_2.symbols == ' ')
+            {
+                if (number_1.flag == 1 && number_2.flag != 1)
+                {
+                    number_2.flag = 1;
+                    number_2.symbols = '+';
+                    return number_1 + number_2;
+                }
+                if (number_1.flag != 1 && number_2.flag == 1)
+                {
+                    number_2.flag = 0;
+                    number_2.symbols = '+';
+                    return number_1 + number_2;
+                }
+                if (number_1.flag == 1 && number_2.flag == 1)
+                {
+                    number_2.flag = 0;
+                }
+                if (number_1.flag != 1 && number_2.flag != 1)
+                {
+                    number_2.flag = 1;
+                }
+            }
+
+            Large_integer result = null;
+            int min = 0, i = 0, k = 0;
+            byte checker = 0;
 
             if (number_1.number.Length > number_2.number.Length)
             {
-                result = new Large_Integer(number_1.number.Length);
-                min = Convert.ToInt32(number_2.number.Length);
+                result = new Large_integer(Convert.ToByte(number_1.number.Length));
+                for (i = 0; i < result.number.Length; ++i)
+                    result.number[i] = number_1.number[i];
+                min = Convert.ToByte(number_2.number.Length);
                 checker = 1;
             }
-            if (number_2.number.Length > number_1.number.Length)
+            if (number_1.number.Length < number_2.number.Length)
             {
-                result = new Large_Integer(number_2.number.Length);
-                min = Convert.ToInt32(number_1.number.Length);
+                result = new Large_integer(Convert.ToByte(number_2.number.Length));
+                for (i = 0; i < result.number.Length; ++i)
+                    result.number[i] = number_2.number[i];
+                min = Convert.ToByte(number_1.number.Length);
                 checker = 2;
             }
             if (number_1.number.Length == number_2.number.Length)
             {
-                result = new Large_Integer(number_1.number.Length);
-                min = number_2.number.Length;
-                for (i = number_1.number.Length - 1; i >= 0; i--)
+                result = new Large_integer(Convert.ToByte(number_1.number.Length));
+                min = Convert.ToByte(number_2.number.Length);
+                for (k = 0; k < number_1.number.Length; ++k)
                 {
-                    if (number_1.number[i] > number_2.number[i])
+                    if (number_1.number[k] > number_2.number[k])
                     {
                         checker = 1;
                         break;
                     }
-                    if (number_1.number[i] < number_2.number[i])
+                    if (number_1.number[k] < number_2.number[k])
                     {
                         checker = 2;
                         break;
@@ -138,129 +166,97 @@ namespace Classes
                 }
             }
 
-            if (number_1.number.Length == number_2.number.Length)
+            if (result != null)
             {
-                if (checker == 1)
+                for (i = min - 1; i >= 0; --i)
                 {
-                    for (i = 0; i < min; i++)
-                    {
-                        result.number[i] += number_1.number[i] - number_2.number[i];
-                        if (result.number[i] < 0)
-                        {
-                            result.number[i] += 10;
-                            result.number[i + 1] -= 1;
-                        }
-                    }
-                    number_1.flag = false;
-                }
-                if (checker == 2)
-                {
-                    for (i = 0; i < min; i++)
-                    {
-                        result.number[i] += number_2.number[i] - number_1.number[i];
-                        if (result.number[i] < 0)
-                        {
-                            result.number[i] += 10;
-                            result.number[i + 1] -= 1;
-                        }
-                    }
-                    number_1.flag = true;
-                }
-            }
-
-            if (number_1.flag == true)
-            {
-                Console.Write("-");
-                i = result.number.Length - 1;
-                while (result.number[i] == 0)
-                {
-                    i--;
-                    if (i == -1)
-                    {
-                        i++;
-                        break;
-                    }
-                }
-                for (; i >= 0; i--)
-                {
-                    Console.Write(result.number[i]);
-                }            
-            }
-            
-            if (number_1.flag == false)
-            {
-                i = result.number.Length - 1;
-                while (result.number[i] == 0)
-                {
-                    i--;
-                    if (i == -1)
-                    {
-                        i++;
-                        break;
-                    }
-                }
-                for (; i >= 0; i--)
-                {
-                    Console.Write(result.number[i]);
-                }
-            }
-
-            return result;
-        }
-
-        public static Large_Integer operator * (Large_Integer number_1, Large_Integer number_2)
-        {
-            Large_Integer result = null;
-            int i = 0, min = 0, max = 0;
-
-            result = new Large_Integer(number_1.number.Length + number_2.number.Length);
-
-            if (number_1.number.Length > number_2.number.Length)
-            {
-                max = number_1.number.Length;
-                min = number_2.number.Length;
-            }
-            if (number_2.number.Length > number_1.number.Length)
-            {
-                max = number_2.number.Length;
-                min = number_1.number.Length;
-            }
-            if (number_1.number.Length == number_2.number.Length)
-            {
-                max = number_1.number.Length;
-                min = number_2.number.Length;
-            }
-
-            for (i = 0; i < min; i++)
-            {
-                for (int j = 0; j < max; j++)
-                {              
                     if (number_1.number.Length > number_2.number.Length)
                     {
-                        result.number[j + i] += number_1.number[j] * number_2.number[i];
+                        result.number[i + result.number.Length - min] -= number_2.number[i];
                     }
                     if (number_1.number.Length < number_2.number.Length)
                     {
-                        result.number[j + i] += number_1.number[i] * number_2.number[j];
+                        result.number[i + result.number.Length - min] -= number_1.number[i];
                     }
                     if (number_1.number.Length == number_2.number.Length)
                     {
-                        result.number[j + i] += number_1.number[i] * number_2.number[j];
-                    }
-                    if (result.number[j + i] > 9)
-                    {
-                        result.number[i + j + 1] += (result.number[i + j]) / 10;
-                        result.number[i + j] = (result.number[i + j]) % 10;
+                        if (checker == 1)
+                            result.number[i + result.number.Length - min] += Convert.ToInt32(number_1.number[i] - number_2.number[i]);
+                        else
+                            result.number[i + result.number.Length - min] += Convert.ToInt32(number_2.number[i] - number_1.number[i]);
                     }
                 }
-            }
+                for (i = result.number.Length - 1; i > 0; --i)
+                    if (result.number[i] < 0)
+                    {
+                        result.number[i - 1] -= 1;
+                        result.number[i] += 10;
+                    }
+                if ((checker == 1 && number_2.flag == 1) || (checker == 2 && number_1.flag == 1))
+                {
+                    result.flag = 0;
+                }
+                if ((checker == 2 && number_2.flag == 1) || (checker == 1 && number_1.flag == 1))
+                {
+                    result.flag = 1;
+                }
 
-            for(i = result.number.Length - 1; i >= 0; i--)
+                return result;
+            }
+            else
             {
-                Console.Write(result.number[i]);
+                Console.WriteLine("Ошибка!");
+                Console.ReadKey();
+                return null;
+            }
+        }
+
+        public static Large_integer operator *(Large_integer number_1, Large_integer number_2)
+        {
+            Large_integer result = new Large_integer(Convert.ToByte(number_1.number.Length + number_2.number.Length));
+            int min = 0, max = 0, i = 0, k = 0;
+            if (number_1.number.Length >= number_2.number.Length)
+            {
+                min = Convert.ToByte(number_2.number.Length);
+                max = Convert.ToByte(number_1.number.Length);
+            }
+            if (number_1.number.Length < number_2.number.Length)
+            {
+                min = Convert.ToByte(number_1.number.Length);
+                max = Convert.ToByte(number_2.number.Length);
             }
 
-            return result;
+            if (result != null)
+            {
+                for (k = min; k > 0; --k)
+                    for (i = max; i > 0; --i)
+                    {
+                        if (number_1.number.Length >= number_2.number.Length)
+                            result.number[k + i - 1] += Convert.ToInt32(number_1.number[i - 1] * number_2.number[k - 1]);
+                        if (number_1.number.Length < number_2.number.Length)
+                            result.number[k + i - 1] += Convert.ToInt32(number_1.number[k - 1] * number_2.number[i - 1]);
+                    }
+
+                for (i = result.number.Length - 1; i >= 0; --i)
+                    if (result.number[i] >= 10)
+                    {
+                        result.number[i - 1] += Convert.ToSByte(result.number[i] / 10);
+                        result.number[i] = Convert.ToSByte(result.number[i] % 10);
+                    }
+
+                if (number_1.flag == 1 || number_2.flag == 1)
+                    result.flag = 1;
+                if (number_1.flag == 1 && number_2.flag == 1)
+                    result.flag = 0;
+
+                return result;
+            }
+            else
+            {
+                Console.WriteLine("Ошибка!");
+                Console.ReadKey();
+                return null;
+            }
         }
     }
 }

@@ -10,30 +10,77 @@ namespace Classes
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Выберите нужное действие: ");
-            Console.WriteLine("1. Большое целое число");
-            Console.WriteLine("2. Большая дробь");
-            Console.Write("Выбор: ");
-            int number = int.Parse(Console.ReadLine());
+            Console.Write("1) Большое целое цисло\n2) Большая дробь\nВыберите: ");
 
-            switch (number){
-                case 1:
-                    Console.Write("Введите первое число: ");
-                    Large_Integer a = new Large_Integer(Console.ReadLine());
+            switch (Console.ReadLine())
+            {
+                case "1":
+                    {
+                        Console.Clear();
+                        Output_of_data num = new Output_of_data();
 
-                    Console.Write("Введите второе число: ");
-                    Large_Integer b = new Large_Integer(Console.ReadLine());
+                        Console.Write("Введите первое число: ");
+                        Large_integer a = new Large_integer(Console.ReadLine());
+                        Console.Write("Введите второе число: ");
+                        Large_integer b = new Large_integer(Console.ReadLine());
 
-                    //Large_Integer c = a + b;
-                    Large_Integer c = a - b;
-                    //Large_Integer c = a * b;
-
+                        Console.Write("1) Сложение\n2) Вычитание\n3) Умножение\nВыберите: ");
+                        switch (Console.ReadLine())
+                        {
+                            case "1":
+                                {
+                                    num.Output(a + b);
+                                }
+                                break;
+                            case "2":
+                                {
+                                    num.Output(a - b);
+                                }
+                                break;
+                            case "3":
+                                {
+                                    num.Output(a * b);
+                                }
+                                break;
+                        }
+                    }
                     break;
-                case 2:
-                    Console.WriteLine("*Данный режим находится в стадии разработки*");
+                case "2":
+                    {
+                        Console.Clear();
+                        Output_of_data num = new Output_of_data();
+
+                        Console.Write("Введите первую дробь: ");
+                        Big_shot a = new Big_shot(Console.ReadLine());
+                        Console.Write("Введите вторую дробь: ");
+                        Big_shot b = new Big_shot(Console.ReadLine());
+
+                        Console.Write("1) Сложение\n2) Вычитание\n3) Умножение\nВыберите: ");
+                        switch (Console.ReadLine())
+                        {
+                            case "1":
+                                {
+                                    num.Output(a + b);
+                                }
+                                break;
+                            case "2":
+                                {
+                                    num.Output(a - b);
+                                }
+                                break;
+                            case "3":
+                                {
+                                    num.Output(a * b);
+                                }
+                                break;
+                        }
+                    }
+                    break;
+                case "\n":
+                    break;
+                default:
                     break;
             }
-            Console.ReadKey();
         }
     }
 }

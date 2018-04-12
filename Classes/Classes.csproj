@@ -43,7 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Large_Integer.cs" />
+    <Compile Include="Big_shot.cs" />
+    <Compile Include="Large_integer.cs" />
+    <Compile Include="Output_of_data.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
